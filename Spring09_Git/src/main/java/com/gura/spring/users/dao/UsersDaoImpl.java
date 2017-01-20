@@ -45,7 +45,6 @@ public class UsersDaoImpl implements UsersDao{
 		}else{
 			return false;
 		}
-		return false;
 	}
 
 }
