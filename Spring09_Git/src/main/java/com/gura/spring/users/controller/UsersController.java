@@ -23,6 +23,20 @@ public class UsersController {
 	@Autowired
 	private UsersService usersService;
 	
+	// "/users/private/info.do" 개인정보 보기 요청 처리
+	@RequestMapping("/users/private/info")
+	public ModelAndView info(HttpSession session){
+		// 1. 세션에 저장된 id 정보를 읽어온다.
+		String id = (String)session.getAttribute("id");
+		// 2. UsersDto가 담긴 ModelAndView 객체를 리턴받는닫.
+		ModelAndView mView = usersService.getData(id);
+		// 3. forward 이동할 경로를 담고
+		mView.setViewName("users/private/info");
+		// 4. ModelAndView 객체를 리턴해준다.
+		
+		return null;
+	}
+	
 	// "/users/signout.do" 로그인 폼 요청 처리
 	@RequestMapping("/users/signout")
 	public ModelAndView signout(HttpSession session){

@@ -11,5 +11,6 @@ public interface UsersService {
 	public boolean isValid(UsersDto dto);
 	public void update(UsersDto dto);
 	public void delete(String id);
-	public Map<String, Object> canUseId(String id);	
+	public Map<String, Object> canUseId(String id);
+	public ModelAndView getData(String id);
 }
