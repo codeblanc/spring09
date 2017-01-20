@@ -27,10 +27,9 @@ public class UserServiceImpl implements UsersService{
 	}
 
 	@Override
-	public void update(UsersDto dto) {
-		// TODO Auto-generated method stub
-		
-	}
+	   public void update(UsersDto dto) {
+	      usersDao.update(dto);
+	   }
 
 	@Override
 	public void delete(String id) {
