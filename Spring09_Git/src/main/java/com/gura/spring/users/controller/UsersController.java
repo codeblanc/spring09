@@ -3,6 +3,7 @@ package com.gura.spring.users.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,53 @@ public class UsersController {
 	//의존 객체 주입 되도록 
 	@Autowired
 	private UsersService usersService;
+	
+	// "/users/signout.do" 로그인 폼 요청 처리
+	@RequestMapping("/users/signout")
+	public ModelAndView signout(HttpSession session){
+		// 세션 초기화
+		//session.invalidate(); 
+		// 또는 세션에서 아이디 정보 삭제
+		session.removeAttribute("id");
+		ModelAndView mView = new ModelAndView();
+		mView.addObject("msg", "로그아웃되었습니다.");
+		mView.addObject("redirectUri", session.getServletContext().getContextPath());
+		return mView;
+	}
+	
+	// "/users/signin.do" 로그인 요청 처리
+	@RequestMapping("/users/signin")
+	public ModelAndView signin(@ModelAttribute UsersDto dto,
+			@RequestParam String uri, HttpSession session){
+		//아이디가 비밀번호가 유효한지 여부를 확인한다. 
+		boolean isValid=usersService.isValid(dto);
+		ModelAndView mView=new ModelAndView();
+		if(isValid){ //아이디 비밀번호가 맞는 정보인 경우
+			//로그인 처리를 해준다.
+			session.setAttribute("id", dto.getId());
+			mView.addObject("msg", dto.getId()+" 님 로그인 되었습니다.");
+			mView.addObject("redirectUri", uri);
+		}else{
+			//아이디 혹은 비밀번호가 틀리다는 정보를 응답한다.
+			mView.addObject("msg", "아이디 혹은 비밀번호가 틀려요");
+			String location=session.getServletContext().getContextPath()+
+					"/users/signin_form.do?uri="+uri;
+			mView.addObject("redirectUri", location);
+		}
+		//알림 페이지로 forward 이동 시킨다. 
+		mView.setViewName("users/alert");
+		return mView;
+	}
+	
+	
+	// "/users/signin_form.do" 로그인 폼 요청 처리
+	@RequestMapping("/users/signin_form")
+	public String signinForm(HttpSession session){
+		//세션 초기화
+		session.invalidate();
+		//뷰페이지로 forward 이동
+		return "users/signin_form";
+	}
 	
 	// "/users/signup.do" 요청처리
 	@RequestMapping("/users/signup")
@@ -44,6 +92,7 @@ public class UsersController {
 		return map;
 	}
 	
+	// "/users/signup_form.do" 로그인 폼 요청 처리
 	@RequestMapping("/users/signup_form")
 	public String signupForm(){
 		

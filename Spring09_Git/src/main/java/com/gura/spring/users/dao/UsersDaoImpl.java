@@ -17,13 +17,16 @@ public class UsersDaoImpl implements UsersDao{
 	public void insert(UsersDto dto) {
 		session.insert("users.insert", dto);
 						// 세션 아이디 , 파라미터 값
-		
 	}
 
 	@Override
 	public boolean isValid(UsersDto dto) {
-		
-		return false;
+		UsersDto resultDto = session.selectOne("users.isValid", dto);
+		if(resultDto == null){	// select된 정보가 없으면
+			return false;		// 잘못된 아이디 또는 비밀번호
+		}else{					// select된 정보가 있으면
+			return true;		// 올바른 아이디와 비밀번호
+		}
 	}
 
 	@Override
