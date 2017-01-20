@@ -21,12 +21,18 @@ public class UsersController {
 	public Map<String, Object> checkid(){
 		return null;
 	}
-	//1
+	//1 
 	@RequestMapping("/users/signup_form")
 	public String signupForm(){
 		
 		return "users/signup_form";
 	}
 	
+	// sign up 요청처리
+	@RequestMapping("/users/signup")
+	public String signup(){
+		
+		return "users/signup";
+	}
 
 }

@@ -15,7 +15,8 @@ public class UsersDaoImpl implements UsersDao{
 	
 	@Override
 	public void insert(UsersDto dto) {
-		
+		session.insert("users.insert", dto);
+						// 세션 아이디 , 파라미터 값
 		
 	}
 
